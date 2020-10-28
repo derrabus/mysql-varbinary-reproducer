@@ -16,5 +16,5 @@ services:
     environment:
       - MYSQL_DATABASE=test
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      -  MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_HOST=%
     tmpfs: /var/lib/mysql
