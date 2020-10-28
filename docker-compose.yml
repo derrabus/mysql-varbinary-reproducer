@@ -5,15 +5,16 @@ services:
       context: php
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "${WWW_PORT:-8080}:80"
     links:
       - mysql
   mysql:
-    image: mysql:8.0.22
+    image: ${MYSQL_IMAGE:-mysql}:${MYSQL_VERSION:-8.0.22}
     command:
       --default-authentication-plugin=mysql_native_password --sql-mode=NO_ENGINE_SUBSTITUTION
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=test
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_HOST=%
     tmpfs: /var/lib/mysql

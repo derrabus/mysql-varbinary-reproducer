@@ -1,6 +1,10 @@
+<a href="/">Emulate Prepared Statement</a> | <a href="/?noemulate=1">Use Server Prepared Statement</a>
+<hr>
+
 <?php
 
-$pdo = new PDO('mysql:host=mysql;port=3306;dbname=test', 'root', null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+try {
+$pdo = new PDO('mysql:host=mysql;port=3306;dbname=test', 'root', null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::MYSQL_ATTR_DIRECT_QUERY => isset($_GET['noemulate'])]);
 $pdo->exec('SET NAMES utf8mb4');
 
 $pdo->exec('DROP TABLE IF EXISTS `file_log`');
@@ -11,3 +15,9 @@ $stmt = $pdo->prepare('SELECT * FROM `file_log` WHERE `filename` REGEXP ?');
 $stmt->execute(['.*']);
 
 var_dump($stmt->fetchAll(PDO::FETCH_ASSOC));
+} catch (Exception $e) {
+    echo "<pre>$e</pre>";
+}
+
+echo '<hr>';
+highlight_file(__FILE__);
