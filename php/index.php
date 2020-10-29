@@ -11,7 +11,8 @@ $pdo->exec('DROP TABLE IF EXISTS `file_log`');
 $pdo->exec('CREATE TABLE `file_log` (`id` INT AUTO_INCREMENT PRIMARY KEY, `filename` varbinary(765) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 $pdo->exec("INSERT INTO `file_log` (`filename`) VALUES ('/var/log/foo.log'), ('/var/log/bar.log')");
 
-$stmt = $pdo->prepare('SELECT * FROM `file_log` WHERE `filename` REGEXP ?');
+
+$stmt = $pdo->prepare('SELECT * FROM `file_log` WHERE CAST(`filename` AS CHAR(100)) REGEXP ?');
 $stmt->execute(['.*']);
 
 var_dump($stmt->fetchAll(PDO::FETCH_ASSOC));
